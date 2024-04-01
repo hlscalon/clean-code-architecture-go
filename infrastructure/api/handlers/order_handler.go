@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"hub-poc-api-v2/adapters/controllers/orders"
+	uc_orders "hub-poc-api-v2/application/usecases/orders"
 	"net/http"
 	"strconv"
 
@@ -15,10 +16,12 @@ type OrderHandler struct {
 
 func (h *OrderHandler) GetOrders(c *gin.Context) {
 	controller := &orders.GetOrdersController{}
-	orders, err := controller.Execute(
-		c.Query("from_date"),
-		c.Query("to_date"),
-	)
+
+	filter := &uc_orders.GetOrdersFilter{
+		FromDate: c.Query("from_date"),
+		ToDate:   c.Query("to_date"),
+	}
+	orders, err := controller.Execute(filter)
 
 	if err != nil {
 		c.Status(http.StatusInternalServerError)

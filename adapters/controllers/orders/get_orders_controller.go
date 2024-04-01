@@ -9,6 +9,6 @@ type GetOrdersController struct {
 	GetOrdersUseCase orders.GetOrdersUseCase
 }
 
-func (c *GetOrdersController) Execute(fromDate, toDate string) ([]entities.OrderEntity, error) {
-	return c.GetOrdersUseCase.Execute(fromDate, toDate)
+func (c *GetOrdersController) Execute(filter *orders.GetOrdersFilter) ([]entities.OrderEntity, error) {
+	return c.GetOrdersUseCase.Execute(filter)
 }

@@ -1,6 +1,7 @@
 package database
 
 import (
+	"hub-poc-api-v2/application/usecases/orders"
 	"hub-poc-api-v2/domain/entities"
 
 	"github.com/jmoiron/sqlx"
@@ -27,7 +28,7 @@ func (r *OrderRepository) GetOrder(id int) (entities.OrderEntity, error) {
 	return orderEntity, nil
 }
 
-func (r *OrderRepository) GetOrdersWithFilter(fromDate, toDate string) ([]entities.OrderEntity, error) {
+func (r *OrderRepository) GetOrdersWithFilter(filter *orders.GetOrdersFilter) ([]entities.OrderEntity, error) {
 	orders := []entities.OrderEntity{}
 
 	err := r.DatabasePool.Select(
@@ -36,7 +37,7 @@ func (r *OrderRepository) GetOrdersWithFilter(fromDate, toDate string) ([]entiti
 			"FROM order "+
 			"WHERE created_date >= $1 "+
 			"AND created_date <= $2 ",
-		fromDate, toDate,
+		filter.FromDate, filter.ToDate,
 	)
 
 	if err != nil {

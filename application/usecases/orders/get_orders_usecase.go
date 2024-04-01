@@ -6,6 +6,6 @@ type GetOrdersUseCase struct {
 	OrderRepository OrderRepository
 }
 
-func (uc *GetOrdersUseCase) Execute(fromDate, toDate string) ([]entities.OrderEntity, error) {
-	return uc.OrderRepository.GetOrdersWithFilter(fromDate, toDate)
+func (uc *GetOrdersUseCase) Execute(filter *GetOrdersFilter) ([]entities.OrderEntity, error) {
+	return uc.OrderRepository.GetOrdersWithFilter(filter)
 }
