@@ -1,0 +1,23 @@
+services:
+  db:
+    image: postgres:latest
+    hostname: db
+    command: postgres
+    environment:
+      - POSTGRES_DB=hub_poc_api_v2
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=123
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    deploy:
+      resources:
+        limits:
+          cpus: "0.9"
+          memory: "400MB"
+
+networks:
+  default:
+    driver: bridge
+    name: hub-poc-api-v2

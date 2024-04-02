@@ -6,7 +6,7 @@ import (
 )
 
 type GetOrdersController struct {
-	GetOrdersUseCase orders.GetOrdersUseCase
+	GetOrdersUseCase *orders.GetOrdersUseCase
 }
 
 func (c *GetOrdersController) Execute(filter *orders.GetOrdersFilter) ([]entities.OrderEntity, error) {

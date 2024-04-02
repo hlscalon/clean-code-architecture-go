@@ -3,6 +3,7 @@ package handlers
 import (
 	"hub-poc-api-v2/adapters/controllers/orders"
 	uc_orders "hub-poc-api-v2/application/usecases/orders"
+	"hub-poc-api-v2/infrastructure/database"
 	"net/http"
 	"strconv"
 
@@ -15,11 +16,17 @@ type OrderHandler struct {
 }
 
 func (h *OrderHandler) GetOrders(c *gin.Context) {
-	controller := &orders.GetOrdersController{}
-
 	filter := &uc_orders.GetOrdersFilter{
 		FromDate: c.Query("from_date"),
 		ToDate:   c.Query("to_date"),
+	}
+
+	controller := &orders.GetOrdersController{
+		GetOrdersUseCase: &uc_orders.GetOrdersUseCase{
+			OrderRepository: &database.OrderRepository{
+				DatabasePool: h.DatabasePool,
+			},
+		},
 	}
 	orders, err := controller.Execute(filter)
 
@@ -38,7 +45,13 @@ func (h *OrderHandler) GetOrder(c *gin.Context) {
 		return
 	}
 
-	controller := &orders.GetOrderController{}
+	controller := &orders.GetOrderController{
+		GetOrderUseCase: &uc_orders.GetOrderUseCase{
+			OrderRepository: &database.OrderRepository{
+				DatabasePool: h.DatabasePool,
+			},
+		},
+	}
 	order, err := controller.Execute(
 		id,
 	)

@@ -13,7 +13,9 @@ type OrderRouter struct {
 }
 
 func (r *OrderRouter) Route() {
-	handler := &handlers.OrderHandler{}
+	handler := &handlers.OrderHandler{
+		DatabasePool: r.databasePool,
+	}
 
 	r.group.GET("orders", handler.GetOrders)
 	r.group.GET("orders/:id", handler.GetOrder)
